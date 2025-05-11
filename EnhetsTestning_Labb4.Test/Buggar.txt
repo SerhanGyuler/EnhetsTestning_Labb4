@@ -1,0 +1,45 @@
+﻿1. [LibrarySystem.cs] / AddBook / rad 30
+Fel: Tillåter dubbla ISBN.
+Upptäckt i: Testcase 2
+Fixad kod:
+if (books.Any(b => b.ISBN == book.ISBN)) return false;
+
+
+2. [LibrarySystem.cs] / AddBook / rad 29
+Fel: Tillåter att lägga till böcker med tomt ISBN.
+Upptäckt i: Testcase 3
+Fixad kod:
+if (book == null || string.IsNullOrWhiteSpace(book.ISBN)) return false;
+
+
+3. [LibrarySystem.cs] / RemoveBook / rad 40
+Fel: Tillåter att ta bort en bok som är utlånad.
+Upptäckt i: Testcase 5
+Fixad kod:
+if (book != null && !book.IsBorrowed)
+
+
+4. [LibrarySystem.cs] / SearchByTitle / rad 55
+Fel: Sökning på titel kräver exakt matchning, är inte skiftlägesokänslig och stöder inte delmatchning.
+Upptäckt i: Testcase 9
+Fixad kod:
+return books.Where(b => b.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToList();
+
+5. [LibrarySystem.cs] / SearchByTitle / rad 60
+Fel: Sökning på titel kräver exakt matchning, är inte skiftlägesokänslig och stöder inte delmatchning.
+Upptäckt i: Testcase 12
+Fixad kod: (Samma som i Testfall 9)
+return books.Where(b => b.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToList();
+
+
+6. [LibrarySystem.cs] / ReturnBook / rad 82
+Fel: Nollställer inte BorrowDate vid återlämning.
+Upptäckt i: Testcase 16
+Fixad kod:
+book.BorrowDate = null;
+
+7. [LibrarySystem.cs] / CalculateLateFee / rad 103
+Fel: Felaktig beräkning: använder + istället för *.
+Upptäckt i: Testcase 20
+Fixad kod:
+return daysLate * feePerDay;
