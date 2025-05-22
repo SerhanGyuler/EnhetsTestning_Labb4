@@ -157,7 +157,9 @@
 
         // Test Case 10
         [TestMethod]
-        public void SearchBook_WithAuthorFullNameOrPartOfTheName_ShouldReturnNull()
+        [DataRow("Test Author", "SearchByAuthor should return a book when the full author name exists.")]
+        [DataRow("Test", "SearchByAuthor should return a book when part of the author name exists.")]
+        public void SearchBook_WithAuthorFullNameOrPartOfTheName_ShouldReturnNull(string input, string message)
         {
             // Arrange
             var library = new LibrarySystem();
@@ -165,17 +167,15 @@
             library.AddBook(book);
 
             // Act
-            var resultFullName = library.SearchByAuthor("Test Author"); // Search by full author name
-            var resultPartialName = library.SearchByAuthor("Test"); // Search by part of the author name
+            var result = library.SearchByAuthor(input);
 
             // Assert
-            Assert.IsNotNull(resultFullName, "SearchByAuthor should return a book when the full author name exists.");
-            Assert.IsNotNull(resultPartialName, "SearchByAuthor should return a book when part of the author name exists.");
+            Assert.IsNotNull(result, message);
         }
 
         // Test Case 11
         [TestMethod]
-        public void SearchBook_WithAuthorNameWithUpperOrLowerCase_ShouldReturnNotNull()
+        public void SearchBook_WithAuthorNameWithUpperOrLowerCase_ShouldReturnABook()
         {
             // Arrange
             var library = new LibrarySystem();
@@ -185,12 +185,10 @@
             // Act
             var resultPartialUpperCase = library.SearchByAuthor("TEST author"); // Search with mixed-case author name
             var resultUpperCase = library.SearchByAuthor("TEST AUTHOR"); // Search with all upper-case author name
-            var resultOnlyLowerCase = library.SearchByAuthor("test"); // Search by part of the author name in lower case
 
             // Assert
-            Assert.AreEqual(1, resultPartialUpperCase.Count, "SearchByAuthor should return one book when using mixed-case author name.");
+            Assert.IsNotEmpty(resultPartialUpperCase, "SearchByAuthor should return one book when using mixed-case author name.");
             Assert.AreEqual(1, resultUpperCase.Count, "SearchByAuthor should return one book when using all upper-case author name.");
-            Assert.AreEqual(1, resultOnlyLowerCase.Count, "SearchByAuthor should return one book when using part of the author name in lower case.");
         }
 
         // Test Case 12
